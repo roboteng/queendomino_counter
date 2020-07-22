@@ -22,7 +22,6 @@ class _ScoringScreenState extends State<ScoringScreen> {
         actions: <Widget>[
           IconButton(
             onPressed: () async {
-              print('button');
               List<String> playerNames = await showDialog(
                 context: context,
                 barrierDismissible: false,

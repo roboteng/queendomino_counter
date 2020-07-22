@@ -13,17 +13,26 @@ class _SettingsModalState extends State<SettingsModal> {
   List<String> players;
   List<TextEditingController> _controllers;
 
+  TextEditingController makeController(
+    String startingText,
+    void Function(String) callBack,
+  ) {
+    TextEditingController _cont = TextEditingController();
+    _cont.text = startingText;
+    _cont.addListener(() {
+      callBack(_cont.text);
+    });
+    return _cont;
+  }
+
   @override
   void initState() {
     players = widget.players;
     _controllers = [];
     for (int i = 0; i < players.length; i++) {
-      TextEditingController _cont = TextEditingController();
-      _cont.text = players[i];
-      _cont.addListener(() {
-        players[i] = _cont.text;
-      });
-      _controllers.add(_cont);
+      _controllers.add(makeController(players[i], (String val) {
+        players[i] = val;
+      }));
     }
     super.initState();
   }
