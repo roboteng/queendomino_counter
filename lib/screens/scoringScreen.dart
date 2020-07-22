@@ -31,7 +31,9 @@ class _ScoringScreenState extends State<ScoringScreen> {
                 ),
               );
               if (playerNames != null) {
-                this.players = playerNames;
+                setState(() {
+                  this.players = playerNames;
+                });
               }
             },
             icon: Icon(Icons.settings),

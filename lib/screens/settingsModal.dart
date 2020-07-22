@@ -11,10 +11,20 @@ class SettingsModal extends StatefulWidget {
 
 class _SettingsModalState extends State<SettingsModal> {
   List<String> players;
+  List<TextEditingController> _controllers;
 
   @override
   void initState() {
     players = widget.players;
+    _controllers = [];
+    for (int i = 0; i < players.length; i++) {
+      TextEditingController _cont = TextEditingController();
+      _cont.text = players[i];
+      _cont.addListener(() {
+        players[i] = _cont.text;
+      });
+      _controllers.add(_cont);
+    }
     super.initState();
   }
 
@@ -25,13 +35,18 @@ class _SettingsModalState extends State<SettingsModal> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: AnimatedList(
+          child: ListView.builder(
               shrinkWrap: true,
-              initialItemCount: players.length + 1,
-              itemBuilder: (context, index, animation) {
+              itemCount: players.length + 1,
+              itemBuilder: (context, index) {
                 if (index < players.length) {
                   return ListTile(
-                    title: Text(players[index]),
+                    title: TextField(
+                      controller: _controllers[index],
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                    ),
                     trailing: Icon(Icons.remove),
                   );
                 } else {
