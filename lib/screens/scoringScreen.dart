@@ -41,7 +41,7 @@ class _ScoringScreenState extends State<ScoringScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: BlocBuilder<ScoringBloc, ScoringDetails>(
             bloc: _bloc,
             builder: (context, data) {
@@ -57,25 +57,31 @@ class _ScoringScreenState extends State<ScoringScreen> {
                                 ] +
                                 [
                                   for (String player in players)
-                                    Center(child: Text(player))
+                                    Center(
+                                      child: Text(player),
+                                    )
                                 ],
                           ),
                         ] +
                         [
                           for (String category in kCategories)
-                            scoreRow(title: category, details: details)
+                            scoreRow(
+                              title: category,
+                              details: details,
+                              numPlayers: players.length,
+                            )
                         ] +
                         [
                           TableRow(
-                            children: [
-                              Text('Total'),
-                              Center(
-                                child: Text('${details.total(0)}'),
-                              ),
-                              Center(
-                                child: Text('${details.total(1)}'),
-                              ),
-                            ],
+                            children: <Widget>[
+                                  Text('Total'),
+                                ] +
+                                [
+                                  for (int i = 0; i < players.length; i++)
+                                    Center(
+                                      child: Text('${details.total(i)}'),
+                                    ),
+                                ],
                           ),
                         ],
                   ),
@@ -92,31 +98,22 @@ class _ScoringScreenState extends State<ScoringScreen> {
 TableRow scoreRow({
   String title,
   ScoringDetails details,
+  int numPlayers,
 }) {
   return TableRow(
-    children: <Widget>[
-      Text(title),
-      ScoringUnit(
-        onChange: (newVal) {
-          _bloc.add(ScoringEvent(
-            type: title,
-            base: int.parse(newVal),
-            playerId: 0,
-          ));
-        },
-      ),
-      ScoringUnit(
-        onChange: (newVal) {
-          _bloc.add(
-            ScoringEvent(
-              type: title,
-              base: int.parse(newVal),
-              playerId: 1,
+    children: <Widget>[Text(title)] +
+        [
+          for (int i = 0; i < numPlayers; i++)
+            ScoringUnit(
+              onChange: (newVal) {
+                _bloc.add(ScoringEvent(
+                  type: title,
+                  base: int.parse(newVal),
+                  playerId: i,
+                ));
+              },
             ),
-          );
-        },
-      ),
-    ],
+        ],
   );
 }
 

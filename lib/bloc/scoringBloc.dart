@@ -8,7 +8,7 @@ class ScoringBloc extends Bloc<ScoringEvent, ScoringDetails> {
       : super(
           ScoringDetails(
             details: {
-              for (String category in kCategories) category: [0, 0]
+              for (String category in kCategories) category: [0, 0, 0, 0, 0, 0]
             },
           ),
         );
@@ -16,22 +16,28 @@ class ScoringBloc extends Bloc<ScoringEvent, ScoringDetails> {
   @override
   Stream<ScoringDetails> mapEventToState(ScoringEvent event) async* {
     print(event);
-    Map<String, List<int>> _map = state.details;
-    _map[event.type][event.playerId] = event.base;
-    yield ScoringDetails(details: _map);
+    if (event.numPlayers == null) {
+      Map<String, List<int>> _map = state.details;
+      _map[event.type][event.playerId] = event.base;
+      yield ScoringDetails(details: _map);
+    } else {
+      for (List<int> list in state.details.values) {
+        list.add(0);
+      }
+      yield ScoringDetails(details: state.details);
+    }
   }
 }
 
 class ScoringEvent {
+  int numPlayers;
   String type;
   int base;
   int playerId;
-  ScoringEvent({this.base, this.type, this.playerId})
-      : assert(type != null),
-        assert(base != null),
-        assert(playerId != null),
-        assert(base >= 0),
-        assert(type != '');
+  ScoringEvent({this.base, this.type, this.playerId, this.numPlayers})
+      : assert((type == null) ^ (numPlayers == null)),
+        assert((base == null) ^ (numPlayers == null)),
+        assert((playerId == null) ^ (numPlayers == null));
 
   String toString() {
     return '$type $playerId, $base';

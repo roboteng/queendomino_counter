@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class SettingsModal extends StatefulWidget {
@@ -30,9 +32,14 @@ class _SettingsModalState extends State<SettingsModal> {
     players = widget.players;
     _controllers = [];
     for (int i = 0; i < players.length; i++) {
-      _controllers.add(makeController(players[i], (String val) {
-        players[i] = val;
-      }));
+      _controllers.add(
+        makeController(
+          players[i],
+          (String val) {
+            players[i] = val;
+          },
+        ),
+      );
     }
     super.initState();
   }
@@ -46,7 +53,7 @@ class _SettingsModalState extends State<SettingsModal> {
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
               shrinkWrap: true,
-              itemCount: players.length + 1,
+              itemCount: min(7, players.length + 1),
               itemBuilder: (context, index) {
                 if (index < players.length) {
                   return ListTile(
@@ -56,10 +63,28 @@ class _SettingsModalState extends State<SettingsModal> {
                         border: InputBorder.none,
                       ),
                     ),
-                    trailing: Icon(Icons.remove),
+                    trailing: FlatButton(
+                      child: Icon(Icons.remove),
+                      onPressed: () {
+                        setState(() {
+                          players.remove(players[index]);
+                        });
+                      },
+                    ),
                   );
                 } else {
-                  return ListTile(trailing: Icon(Icons.add));
+                  return ListTile(
+                    onTap: () {
+                      setState(() {
+                        players.add('Player ${index + 1}');
+                      });
+                      _controllers
+                          .add(makeController(players[index], (String val) {
+                        players[index] = val;
+                      }));
+                    },
+                    trailing: Icon(Icons.add),
+                  );
                 }
               }),
         ),
