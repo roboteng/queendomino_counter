@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:queendomino_counter/bloc/scoringBloc.dart';
 import 'package:queendomino_counter/constants/constants.dart';
 import 'package:queendomino_counter/screens/settingsModal.dart';
+import 'package:queendomino_counter/utils/scoring.dart';
 
 ScoringBloc _bloc = ScoringBloc();
 
@@ -12,7 +13,7 @@ class ScoringScreen extends StatefulWidget {
 }
 
 class _ScoringScreenState extends State<ScoringScreen> {
-  List<String> players = ['Player 1', 'Player 2'];
+  List<String> players = ['Trevor', 'Karen'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

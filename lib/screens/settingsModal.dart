@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:queendomino_counter/utils/playerList.dart';
 
 class SettingsModal extends StatefulWidget {
   final List<String> players;
@@ -12,7 +11,7 @@ class SettingsModal extends StatefulWidget {
 }
 
 class _SettingsModalState extends State<SettingsModal> {
-  List<String> players;
+  List<DeletablePlayer> players;
   List<TextEditingController> _controllers;
 
   TextEditingController makeController(
@@ -29,17 +28,23 @@ class _SettingsModalState extends State<SettingsModal> {
 
   @override
   void initState() {
-    players = widget.players;
+    players = widget.players
+        .map<DeletablePlayer>((String name) => DeletablePlayer(name))
+        .toList();
     _controllers = [];
     for (int i = 0; i < players.length; i++) {
-      _controllers.add(
-        makeController(
-          players[i],
-          (String val) {
-            players[i] = val;
-          },
-        ),
-      );
+      if (players[i].isDeleted) {
+        _controllers.add(null);
+      } else {
+        _controllers.add(
+          makeController(
+            players[i].name,
+            (String val) {
+              players[i].name = val;
+            },
+          ),
+        );
+      }
     }
     super.initState();
   }
@@ -53,34 +58,44 @@ class _SettingsModalState extends State<SettingsModal> {
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
               shrinkWrap: true,
-              itemCount: min(7, players.length + 1),
+              itemCount: players.length + 1,
               itemBuilder: (context, index) {
                 if (index < players.length) {
-                  return ListTile(
-                    title: TextField(
-                      controller: _controllers[index],
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
+                  if (players[index].isDeleted) {
+                    return Container();
+                  } else {
+                    return ListTile(
+                      title: TextField(
+                        controller: _controllers[index],
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
                       ),
-                    ),
-                    trailing: FlatButton(
-                      child: Icon(Icons.remove),
-                      onPressed: () {
-                        setState(() {
-                          players.remove(players[index]);
-                        });
-                      },
-                    ),
-                  );
+                      trailing: FlatButton(
+                        child: Icon(Icons.remove),
+                        onPressed: () {
+                          setState(() {
+                            players[index].delete();
+                          });
+                        },
+                      ),
+                    );
+                  }
                 } else {
                   return ListTile(
                     onTap: () {
                       setState(() {
-                        players.add('Player ${index + 1}');
+                        players.add(
+                          DeletablePlayer(
+                            getNextPlayerName(
+                              getPlayers(players),
+                            ),
+                          ),
+                        );
                       });
-                      _controllers
-                          .add(makeController(players[index], (String val) {
-                        players[index] = val;
+                      _controllers.add(
+                          makeController(players[index].name, (String val) {
+                        players[index].name = val;
                       }));
                     },
                     trailing: Icon(Icons.add),
@@ -100,7 +115,7 @@ class _SettingsModalState extends State<SettingsModal> {
             SimpleDialogOption(
               child: Text('Save'),
               onPressed: () {
-                Navigator.pop(context, players);
+                Navigator.pop(context, getPlayers(players));
               },
             ),
           ],
