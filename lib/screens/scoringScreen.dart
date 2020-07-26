@@ -82,28 +82,6 @@ class _ScoringScreenState extends State<ScoringScreen> {
   }
 }
 
-TableRow scoreRow({
-  String title,
-  ScoringDetails details,
-  int numPlayers,
-}) {
-  return TableRow(
-    children: <Widget>[Text(title)] +
-        [
-          for (int i = 0; i < numPlayers; i++)
-            ScoringUnit(
-              onChange: (newVal) {
-                _bloc.add(ScoringEvent(
-                  type: title,
-                  base: int.parse(newVal),
-                  playerId: i,
-                ));
-              },
-            ),
-        ],
-  );
-}
-
 class ScoringUnit extends StatefulWidget {
   final Function onChange;
 
