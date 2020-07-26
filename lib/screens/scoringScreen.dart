@@ -4,6 +4,7 @@ import 'package:queendomino_counter/bloc/scoringBloc.dart';
 import 'package:queendomino_counter/constants/constants.dart';
 import 'package:queendomino_counter/screens/settingsModal.dart';
 import 'package:queendomino_counter/utils/scoring.dart';
+import 'package:table_sticky_headers/table_sticky_headers.dart';
 
 ScoringBloc _bloc = ScoringBloc();
 
@@ -14,6 +15,7 @@ class ScoringScreen extends StatefulWidget {
 
 class _ScoringScreenState extends State<ScoringScreen> {
   List<String> players = ['Trevor', 'Karen'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,47 +49,31 @@ class _ScoringScreenState extends State<ScoringScreen> {
             bloc: _bloc,
             builder: (context, data) {
               ScoringDetails details = data;
-              return ListView(
-                children: <Widget>[
-                  Table(
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                    children: <TableRow>[
-                          TableRow(
-                            children: <Widget>[
-                                  Container(),
-                                ] +
-                                [
-                                  for (String player in players)
-                                    Center(
-                                      child: Text(player),
-                                    )
-                                ],
-                          ),
-                        ] +
-                        [
-                          for (String category in kCategories)
-                            scoreRow(
-                              title: category,
-                              details: details,
-                              numPlayers: players.length,
-                            )
-                        ] +
-                        [
-                          TableRow(
-                            children: <Widget>[
-                                  Text('Total'),
-                                ] +
-                                [
-                                  for (int i = 0; i < players.length; i++)
-                                    Center(
-                                      child: Text('${details.total(i)}'),
-                                    ),
-                                ],
-                          ),
-                        ],
-                  ),
-                ],
-              );
+              return StickyHeadersTable(
+                  columnsLength: players.length,
+                  rowsLength: kCategories.length + 1, // one more for total
+                  columnsTitleBuilder: (j) => Text(players[j]),
+                  rowsTitleBuilder: (i) {
+                    return Text(
+                        i == kCategories.length ? 'Total' : kCategories[i]);
+                  },
+                  contentCellBuilder: (column, row) {
+                    if (row == kCategories.length) {
+                      return Text(details.total(column).toString());
+                    } else {
+                      return ScoringUnit(
+                        onChange: (newVal) {
+                          _bloc.add(
+                            ScoringEvent(
+                              type: kCategories[row],
+                              base: int.parse(newVal),
+                              playerId: column,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  });
             },
           ),
         ),
@@ -132,13 +118,17 @@ class _ScoringUnitState extends State<ScoringUnit> {
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    _controller.addListener(() {
-      {
-        if (_controller.text != '') {
-          widget.onChange(_controller.text);
+    _controller.addListener(
+      () {
+        {
+          if (_controller.text != '') {
+            widget.onChange(_controller.text);
+          } else {
+            widget.onChange('0');
+          }
         }
-      }
-    });
+      },
+    );
   }
 
   @override
@@ -151,16 +141,19 @@ class _ScoringUnitState extends State<ScoringUnit> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        textAlign: TextAlign.center,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            gapPadding: 0,
-            borderRadius: BorderRadius.circular(12.0),
+      child: SizedBox(
+        width: 96,
+        child: TextField(
+          textAlign: TextAlign.center,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              gapPadding: 0,
+              borderRadius: BorderRadius.circular(12.0),
+            ),
           ),
+          keyboardType: TextInputType.number,
+          controller: _controller,
         ),
-        keyboardType: TextInputType.number,
-        controller: _controller,
       ),
     );
   }
