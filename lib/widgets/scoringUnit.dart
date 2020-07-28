@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:queendomino_counter/screens/scoreBreakout.dart';
+import 'package:queendomino_counter/utils/scoring.dart';
 
 class ScoringUnit extends StatefulWidget {
   final Function onChange;
@@ -9,28 +11,15 @@ class ScoringUnit extends StatefulWidget {
 }
 
 class _ScoringUnitState extends State<ScoringUnit> {
-  TextEditingController _controller;
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-    _controller.addListener(
-      () {
-        {
-          if (_controller.text != '') {
-            widget.onChange(_controller.text);
-          } else {
-            widget.onChange('0');
-          }
-        }
-      },
-    );
-  }
+  List<List<int>> scores;
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  void initState() {
+    if (scores == null)
+      scores = [
+        [0, 1]
+      ];
+    super.initState();
   }
 
   @override
@@ -39,16 +28,21 @@ class _ScoringUnitState extends State<ScoringUnit> {
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
         width: 96,
-        child: TextField(
-          textAlign: TextAlign.center,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              gapPadding: 0,
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-          ),
-          keyboardType: TextInputType.number,
-          controller: _controller,
+        child: RaisedButton(
+          child: Text(subScore(scores).toString()),
+          onPressed: () async {
+            List<List<int>> results = await showDialog(
+              context: context,
+              child: BreakoutScreen(
+                scores: scores,
+              ),
+            );
+            if (results != null) {
+              setState(() {
+                scores = results;
+              });
+            }
+          },
         ),
       ),
     );

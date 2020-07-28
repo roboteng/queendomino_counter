@@ -51,30 +51,31 @@ class _ScoringScreenState extends State<ScoringScreen> {
             builder: (context, data) {
               ScoringDetails details = data;
               return StickyHeadersTable(
-                  columnsLength: players.length,
-                  rowsLength: kCategories.length + 1, // one more for total
-                  columnsTitleBuilder: (j) => Text(players[j]),
-                  rowsTitleBuilder: (i) {
-                    return Text(
-                        i == kCategories.length ? 'Total' : kCategories[i]);
-                  },
-                  contentCellBuilder: (column, row) {
-                    if (row == kCategories.length) {
-                      return Text(details.total(column).toString());
-                    } else {
-                      return ScoringUnit(
-                        onChange: (newVal) {
-                          _bloc.add(
-                            ScoringEvent(
-                              type: kCategories[row],
-                              base: int.parse(newVal),
-                              playerId: column,
-                            ),
-                          );
-                        },
-                      );
-                    }
-                  });
+                columnsLength: players.length,
+                rowsLength: kCategories.length + 1, // one more for total
+                columnsTitleBuilder: (j) => Text(players[j]),
+                rowsTitleBuilder: (i) {
+                  return Text(
+                      i == kCategories.length ? 'Total' : kCategories[i]);
+                },
+                contentCellBuilder: (column, row) {
+                  if (row == kCategories.length) {
+                    return Text(details.total(column).toString());
+                  } else {
+                    return ScoringUnit(
+                      onChange: (newVal) {
+                        _bloc.add(
+                          ScoringEvent(
+                            type: kCategories[row],
+                            base: int.parse(newVal),
+                            playerId: column,
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              );
             },
           ),
         ),

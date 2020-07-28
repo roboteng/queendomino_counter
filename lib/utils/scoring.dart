@@ -31,3 +31,12 @@ List<int> vectorAdd(List<int> it, List<int> other) {
   }
   return values;
 }
+
+//used in the scoring breakout
+int subScore(List<List<int>> elements) {
+  int sum = 0;
+  for (List<int> scores in elements) {
+    sum += scores.reduce((a, b) => a * b);
+  }
+  return sum;
+}

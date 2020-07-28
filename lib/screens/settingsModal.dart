@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:queendomino_counter/utils/playerList.dart';
+import 'package:queendomino_counter/widgets/saveCancel.dart';
 
 class SettingsModal extends StatefulWidget {
   final List<String> players;
@@ -103,22 +104,8 @@ class _SettingsModalState extends State<SettingsModal> {
                 }
               }),
         ),
-        Wrap(
-          alignment: WrapAlignment.end,
-          children: <Widget>[
-            SimpleDialogOption(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            SimpleDialogOption(
-              child: Text('Save'),
-              onPressed: () {
-                Navigator.pop(context, getPlayers(players));
-              },
-            ),
-          ],
+        SaveCancelOptions(
+          returnParams: getPlayers(players),
         ),
       ],
     );
