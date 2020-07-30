@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:queendomino_counter/utils/range.dart';
 import 'package:queendomino_counter/widgets/saveCancel.dart';
+import 'package:queendomino_counter/widgets/scorePair.dart';
 
 class BreakoutScreen extends StatefulWidget {
   final List<List<int>> scores;
@@ -12,13 +14,11 @@ class BreakoutScreen extends StatefulWidget {
 
 class _BreakoutScreenState extends State<BreakoutScreen> {
   List<List<int>> scores;
-  List<List<TextEditingController>> _controllers;
 
   @override
   void initState() {
     super.initState();
     scores = widget.scores;
-    _controllers = [];
   }
 
   @override
@@ -26,35 +26,31 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
     return SimpleDialog(
       title: Text('Update Score'),
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (value) {
-                    scores[0][0] = int.parse(value);
-                  },
-                  keyboardType: TextInputType.number,
-                ),
-              ),
+        Column(children: [
+          for (int i in range(scores.length - 1))
+            ScorePair(
+              pair: scores[i],
+              onChange: (newPair) {
+                scores[i] = newPair;
+              },
             ),
-            Icon(Icons.crop_square),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (value) {
-                    scores[0][1] = int.parse(value);
-                  },
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-            ),
-          ],
-        ),
+        ]),
         SaveCancelOptions(returnParams: scores),
       ],
     );
   }
 }
+
+//Row(
+//mainAxisAlignment: MainAxisAlignment.end,
+//children: <Widget>[
+//IconButton(
+//icon: Icon(Icons.add),
+//onPressed: () {
+//setState(() {
+//scores.add([0, 0]);
+//});
+//},
+//),
+//],
+//);
