@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:queendomino_counter/utils/range.dart';
 import 'package:queendomino_counter/widgets/saveCancel.dart';
 import 'package:queendomino_counter/widgets/scorePair.dart';
 
@@ -27,10 +26,11 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
       title: Text('Update Score'),
       children: <Widget>[
         Column(children: [
-          for (int i in range(scores.length - 1))
+          for (int i in Iterable<int>.generate(scores.length))
             ScorePair(
               pair: scores[i],
               onChange: (newPair) {
+                print(scores);
                 scores[i] = newPair;
               },
             ),
@@ -40,17 +40,3 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
     );
   }
 }
-
-//Row(
-//mainAxisAlignment: MainAxisAlignment.end,
-//children: <Widget>[
-//IconButton(
-//icon: Icon(Icons.add),
-//onPressed: () {
-//setState(() {
-//scores.add([0, 0]);
-//});
-//},
-//),
-//],
-//);

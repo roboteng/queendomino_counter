@@ -21,17 +21,19 @@ class ScorePair extends StatefulWidget {
 }
 
 class _ScorePairState extends State<ScorePair> {
-  TextEditingController _c1;
-  TextEditingController _c2;
+  List<TextEditingController> _controllers;
 
   @override
   void initState() {
-    for (TextEditingController controller in [_c1, _c2]) {
-      controller = TextEditingController();
-      controller.text = widget.pair[0].toString();
+    _controllers = [];
+    for (int i in Iterable<int>.generate(2)) {
+      TextEditingController controller = TextEditingController();
+      controller.text = widget.pair[i].toString();
       controller.addListener(() {
+        print(controller.text);
         widget.onChange(getPair());
       });
+      _controllers.add(controller);
     }
 
     if (!widget.isPair) {
@@ -41,11 +43,14 @@ class _ScorePairState extends State<ScorePair> {
     super.initState();
   }
 
-  List<int> getPair() {
-    return [
-      int.parse(_c1.text),
-      int.parse(_c2.text),
-    ];
+  List<int> getPair() => _controllers
+      .map((c) => int.parse((c.text == '') ? '0' : c.text))
+      .toList();
+
+  @override
+  void dispose() {
+    _controllers.forEach((x) => x.dispose());
+    super.dispose();
   }
 
   @override
@@ -53,15 +58,21 @@ class _ScorePairState extends State<ScorePair> {
     return Row(
       children: <Widget>[
         Expanded(
-          child: TextField(
-            controller: _c1,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controllers[0],
+            ),
           ),
         ),
         Icon(widget.isMultiply ? Icons.close : Icons.navigate_before),
         Expanded(
-          child: TextField(
-            readOnly: !widget.isPair,
-            controller: _c2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              readOnly: !widget.isPair,
+              controller: _controllers[1],
+            ),
           ),
         ),
       ],
