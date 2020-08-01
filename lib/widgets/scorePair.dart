@@ -61,6 +61,7 @@ class _ScorePairState extends State<ScorePair> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              keyboardType: TextInputType.number,
               controller: _controllers[0],
             ),
           ),
@@ -70,6 +71,7 @@ class _ScorePairState extends State<ScorePair> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              keyboardType: TextInputType.number,
               readOnly: !widget.isPair,
               controller: _controllers[1],
             ),
