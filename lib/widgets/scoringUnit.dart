@@ -4,8 +4,9 @@ import 'package:queendomino_counter/utils/scoring.dart';
 
 class ScoringUnit extends StatefulWidget {
   final Function onChange;
+  final String title;
 
-  ScoringUnit({Key key, this.onChange}) : super(key: key);
+  ScoringUnit({Key key, this.onChange, this.title}) : super(key: key);
   @override
   _ScoringUnitState createState() => _ScoringUnitState();
 }
@@ -35,6 +36,7 @@ class _ScoringUnitState extends State<ScoringUnit> {
               context: context,
               child: BreakoutScreen(
                 scores: scores,
+                title: widget.title,
               ),
             );
             if (results != null) {

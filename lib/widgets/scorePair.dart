@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ScorePair extends StatefulWidget {
@@ -61,6 +62,7 @@ class _ScorePairState extends State<ScorePair> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               controller: _controllers[0],
             ),
@@ -71,6 +73,7 @@ class _ScorePairState extends State<ScorePair> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               readOnly: !widget.isPair,
               controller: _controllers[1],

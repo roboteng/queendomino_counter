@@ -4,8 +4,9 @@ import 'package:queendomino_counter/widgets/scorePair.dart';
 
 class BreakoutScreen extends StatefulWidget {
   final List<List<int>> scores;
+  final String title;
 
-  BreakoutScreen({Key key, this.scores}) : super(key: key);
+  BreakoutScreen({Key key, this.scores, this.title}) : super(key: key);
 
   @override
   _BreakoutScreenState createState() => _BreakoutScreenState();
@@ -16,7 +17,6 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
   List<bool> isVisible;
 
   List<List<int>> getVisible() {
-    debugPrint('get visible');
     List<List<int>> values = [];
     for (int i in Iterable.generate(scores.length)) {
       if (isVisible[i]) {
@@ -34,10 +34,17 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
   }
 
   @override
+  void dispose() {
+    debugPrint('dispose');
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     assert(scores.length == isVisible.length);
     return SimpleDialog(
-      title: Text('Update Score'),
+      title: Text(widget.title ?? 'Update Score'),
       children: <Widget>[
         ListView.builder(
           shrinkWrap: true,
@@ -70,6 +77,7 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
               }
             } else {
               return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   IconButton(
                     icon: Icon(Icons.add),

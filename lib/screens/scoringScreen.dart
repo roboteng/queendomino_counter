@@ -63,6 +63,7 @@ class _ScoringScreenState extends State<ScoringScreen> {
                     return Text(details.total(column).toString());
                   } else {
                     return ScoringUnit(
+                      title: kCategories[row],
                       onChange: (newVal) {
                         _bloc.add(
                           ScoringEvent(
