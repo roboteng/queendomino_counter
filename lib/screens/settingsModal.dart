@@ -105,7 +105,7 @@ class _SettingsModalState extends State<SettingsModal> {
               }),
         ),
         SaveCancelOptions(
-          returnParams: getPlayers(players),
+          returnParams: () => getPlayers(players),
         ),
       ],
     );

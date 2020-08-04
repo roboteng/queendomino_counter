@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SaveCancelOptions extends StatelessWidget {
-  final returnParams;
+  final Function returnParams;
 
   const SaveCancelOptions({Key key, this.returnParams}) : super(key: key);
 
@@ -19,7 +19,7 @@ class SaveCancelOptions extends StatelessWidget {
         SimpleDialogOption(
           child: Text('Save'),
           onPressed: () {
-            Navigator.pop(context, returnParams);
+            Navigator.pop(context, returnParams());
           },
         ),
       ],
