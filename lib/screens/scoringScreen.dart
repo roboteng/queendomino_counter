@@ -7,8 +7,6 @@ import 'package:queendomino_counter/utils/scoring.dart';
 import 'package:queendomino_counter/widgets/scoringUnit.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
 
-ScoringBloc _bloc = ScoringBloc();
-
 class ScoringScreen extends StatefulWidget {
   @override
   _ScoringScreenState createState() => _ScoringScreenState();
@@ -47,7 +45,6 @@ class _ScoringScreenState extends State<ScoringScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: BlocBuilder<ScoringBloc, ScoringDetails>(
-            bloc: _bloc,
             builder: (context, data) {
               ScoringDetails details = data;
               return StickyHeadersTable(
@@ -65,13 +62,13 @@ class _ScoringScreenState extends State<ScoringScreen> {
                     return ScoringUnit(
                       title: kCategories[row],
                       onChange: (newVal) {
-                        _bloc.add(
-                          ScoringEvent(
-                            type: kCategories[row],
-                            base: int.parse(newVal),
-                            playerId: column,
-                          ),
-                        );
+                        context.bloc<ScoringBloc>().add(
+                              ScoringEvent(
+                                type: kCategories[row],
+                                base: newVal,
+                                playerId: column,
+                              ),
+                            );
                       },
                     );
                   }

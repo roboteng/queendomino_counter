@@ -4,16 +4,19 @@ import 'package:queendomino_counter/utils/categoryScoring.dart';
 import 'package:queendomino_counter/utils/scoring.dart';
 
 class ScoringUnit extends StatefulWidget {
-  final Function onChange;
+  final void Function(int) onChange;
   final String title;
+  final int playerId;
 
-  ScoringUnit({Key key, this.onChange, this.title}) : super(key: key);
+  ScoringUnit({Key key, this.onChange, this.title, this.playerId})
+      : super(key: key);
   @override
   _ScoringUnitState createState() => _ScoringUnitState();
 }
 
 class _ScoringUnitState extends State<ScoringUnit> {
   List<List<int>> scores;
+  String label;
 
   @override
   void initState() {
@@ -22,6 +25,8 @@ class _ScoringUnitState extends State<ScoringUnit> {
         [0, 1]
       ];
     super.initState();
+    label =
+        subScore(scores, getCategoryProperties(widget.title)[FUNC]).toString();
   }
 
   @override
@@ -31,9 +36,7 @@ class _ScoringUnitState extends State<ScoringUnit> {
       child: SizedBox(
         width: 96,
         child: RaisedButton(
-          child: Text(
-              subScore(scores, getCategoryProperties(widget.title)[FUNC])
-                  .toString()),
+          child: Text(label),
           onPressed: () async {
             List<List<int>> results = await showDialog(
               context: context,
@@ -45,6 +48,11 @@ class _ScoringUnitState extends State<ScoringUnit> {
             if (results != null) {
               setState(() {
                 scores = results;
+                int val =
+                    subScore(scores, getCategoryProperties(widget.title)[FUNC]);
+
+                widget.onChange(val);
+                label = val.toString();
               });
             }
           },

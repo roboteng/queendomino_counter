@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:queendomino_counter/bloc/scoringBloc.dart';
 import 'package:queendomino_counter/screens/scoringScreen.dart';
 
 void main() {
@@ -15,7 +17,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ScoringScreen(),
+      home: BlocProvider(
+        create: (BuildContext context) => ScoringBloc(),
+        child: ScoringScreen(),
+      ),
     );
   }
 }
