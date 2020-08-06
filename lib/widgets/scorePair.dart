@@ -30,6 +30,7 @@ class _ScorePairState extends State<ScorePair> {
     for (int i in Iterable<int>.generate(2)) {
       TextEditingController controller = TextEditingController();
       controller.text = widget.pair[i].toString();
+      if (controller.text == '0') controller.text = '';
       controller.addListener(() {
         print(controller.text);
         widget.onChange(getPair());

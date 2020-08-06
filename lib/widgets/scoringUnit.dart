@@ -22,7 +22,7 @@ class _ScoringUnitState extends State<ScoringUnit> {
   void initState() {
     if (scores == null)
       scores = [
-        [0, 1]
+        [0, getCategoryProperties(widget.title)[SECOND] ?? 0]
       ];
     super.initState();
     label =
@@ -50,7 +50,6 @@ class _ScoringUnitState extends State<ScoringUnit> {
                 scores = results;
                 int val =
                     subScore(scores, getCategoryProperties(widget.title)[FUNC]);
-
                 widget.onChange(val);
                 label = val.toString();
               });

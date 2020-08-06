@@ -79,7 +79,8 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
             icon: Icon(Icons.add),
             onPressed: () {
               setState(() {
-                scores.add([0, 1]);
+                scores
+                    .add([0, getCategoryProperties(widget.title)[SECOND] ?? 0]);
                 isVisible.add(true);
               });
             },
