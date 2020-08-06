@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:queendomino_counter/screens/scoreBreakout.dart';
+import 'package:queendomino_counter/utils/categoryScoring.dart';
 import 'package:queendomino_counter/utils/scoring.dart';
 
 class ScoringUnit extends StatefulWidget {
@@ -30,7 +31,9 @@ class _ScoringUnitState extends State<ScoringUnit> {
       child: SizedBox(
         width: 96,
         child: RaisedButton(
-          child: Text(subScore(scores).toString()),
+          child: Text(
+              subScore(scores, getCategoryProperties(widget.title)[FUNC])
+                  .toString()),
           onPressed: () async {
             List<List<int>> results = await showDialog(
               context: context,

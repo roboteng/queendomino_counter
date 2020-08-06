@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ScorePair extends StatefulWidget {
   final List<int> pair;
-  final bool isMultiply; //true if multiply, false if divide
+  final Widget icon; //middle icon
   final bool
       isPair; //true if the user can change both, false if the second is constant
   final void Function(List<int>) onChange;
@@ -11,9 +11,9 @@ class ScorePair extends StatefulWidget {
   const ScorePair({
     Key key,
     this.pair,
-    this.isMultiply = true,
     this.isPair = true,
     this.onChange,
+    this.icon,
   })  : assert(pair.length == 2),
         super(key: key);
 
@@ -68,11 +68,12 @@ class _ScorePairState extends State<ScorePair> {
             ),
           ),
         ),
-        Icon(widget.isMultiply ? Icons.close : Icons.navigate_before),
+        widget.icon,
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              enabled: widget.isPair,
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               readOnly: !widget.isPair,

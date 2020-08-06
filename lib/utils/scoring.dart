@@ -33,10 +33,10 @@ List<int> vectorAdd(List<int> it, List<int> other) {
 }
 
 //used in the scoring breakout
-int subScore(List<List<int>> elements) {
+int subScore(List<List<int>> elements, int Function(int, int) func) {
   int sum = 0;
   for (List<int> scores in elements) {
-    sum += scores.reduce((a, b) => a * b);
+    sum += scores.reduce(func);
   }
   return sum;
 }
