@@ -35,7 +35,7 @@ class _ScoringUnitState extends State<ScoringUnit> {
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
         width: 96,
-        child: RaisedButton(
+        child: OutlineButton(
           child: Text(label),
           onPressed: () async {
             List<List<int>> results = await showDialog(

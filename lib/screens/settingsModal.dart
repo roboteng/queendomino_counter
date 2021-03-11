@@ -50,6 +50,49 @@ class _SettingsModalState extends State<SettingsModal> {
     super.initState();
   }
 
+  Widget columnChildren(int index) {
+    if (index < players.length) {
+      if (players[index].isDeleted) {
+        return Container();
+      } else {
+        return ListTile(
+          title: TextField(
+            controller: _controllers[index],
+            decoration: InputDecoration(
+              border: InputBorder.none,
+            ),
+          ),
+          trailing: FlatButton(
+            child: Icon(Icons.remove),
+            onPressed: () {
+              setState(() {
+                players[index].delete();
+              });
+            },
+          ),
+        );
+      }
+    } else {
+      return ListTile(
+        onTap: () {
+          setState(() {
+            players.add(
+              DeletablePlayer(
+                getNextPlayerName(
+                  getPlayers(players),
+                ),
+              ),
+            );
+          });
+          _controllers.add(makeController(players[index].name, (String val) {
+            players[index].name = val;
+          }));
+        },
+        trailing: Icon(Icons.add),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
@@ -57,52 +100,10 @@ class _SettingsModalState extends State<SettingsModal> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: players.length + 1,
-              itemBuilder: (context, index) {
-                if (index < players.length) {
-                  if (players[index].isDeleted) {
-                    return Container();
-                  } else {
-                    return ListTile(
-                      title: TextField(
-                        controller: _controllers[index],
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                      ),
-                      trailing: FlatButton(
-                        child: Icon(Icons.remove),
-                        onPressed: () {
-                          setState(() {
-                            players[index].delete();
-                          });
-                        },
-                      ),
-                    );
-                  }
-                } else {
-                  return ListTile(
-                    onTap: () {
-                      setState(() {
-                        players.add(
-                          DeletablePlayer(
-                            getNextPlayerName(
-                              getPlayers(players),
-                            ),
-                          ),
-                        );
-                      });
-                      _controllers.add(
-                          makeController(players[index].name, (String val) {
-                        players[index].name = val;
-                      }));
-                    },
-                    trailing: Icon(Icons.add),
-                  );
-                }
-              }),
+          child: Column(children: <Widget>[
+            for (int i in Iterable.generate(players.length + 1))
+              columnChildren(i)
+          ]),
         ),
         SaveCancelOptions(
           returnParams: () => getPlayers(players),

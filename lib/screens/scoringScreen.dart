@@ -4,6 +4,7 @@ import 'package:queendomino_counter/bloc/scoringBloc.dart';
 import 'package:queendomino_counter/constants/constants.dart';
 import 'package:queendomino_counter/screens/settingsModal.dart';
 import 'package:queendomino_counter/utils/scoring.dart';
+import 'package:queendomino_counter/widgets/app_drawer.dart';
 import 'package:queendomino_counter/widgets/scoringUnit.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
 
@@ -18,9 +19,12 @@ class _ScoringScreenState extends State<ScoringScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AppDrawer(),
       appBar: AppBar(
         centerTitle: true,
-        title: Text('QueenDomino Counter'),
+        title: Text(
+          'QueenDomino Counter',
+        ),
         actions: <Widget>[
           IconButton(
             onPressed: () async {
@@ -37,7 +41,7 @@ class _ScoringScreenState extends State<ScoringScreen> {
                 });
               }
             },
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.person_add_alt),
           )
         ],
       ),
