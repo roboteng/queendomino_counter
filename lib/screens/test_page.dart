@@ -205,7 +205,7 @@ class Footer extends StatelessWidget {
           width: legendWidth,
           height: legendHeight,
           child: Center(
-            child: FlatButton(
+            child: TextButton(
               child: Text('Legend'),
             ),
           ),
@@ -219,7 +219,7 @@ class Footer extends StatelessWidget {
                 children: List.generate(
                   xSize,
                   (i) => ColumnHeader(
-                    child: RaisedButton(
+                    child: ElevatedButton(
                       child: Text('Footer ${i + 1}'),
                       onPressed: () => getSize(keys[i]),
                     ),

@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ModeProvider()),
+        BlocProvider(
+          create: (BuildContext context) => ScoringBloc(),
+        ),
       ],
       child: MaterialApp(
         title: 'Queendomino Counter',
@@ -23,10 +26,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: BlocProvider(
-          create: (BuildContext context) => ScoringBloc(),
-          child: ScoringScreen(),
-        ),
+        home: ScoringScreen(),
       ),
     );
   }

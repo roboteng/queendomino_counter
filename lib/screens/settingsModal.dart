@@ -62,7 +62,7 @@ class _SettingsModalState extends State<SettingsModal> {
               border: InputBorder.none,
             ),
           ),
-          trailing: FlatButton(
+          trailing: TextButton(
             child: Icon(Icons.remove),
             onPressed: () {
               setState(() {
