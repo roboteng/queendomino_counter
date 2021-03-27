@@ -15,6 +15,7 @@ class ScoringEvent {
   }
 }
 
+/// A map between each category, and the scores for all players in that category
 class ScoringDetails {
   Map<Category, List<int>> details;
 

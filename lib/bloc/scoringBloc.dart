@@ -17,7 +17,6 @@ class ScoringBloc extends Bloc<ScoringEvent, ScoringDetails> {
 
   @override
   Stream<ScoringDetails> mapEventToState(ScoringEvent event) async* {
-    print(event);
     if (event.numPlayers == null) {
       Map<Category, List<int>> _map = state.details;
       _map[event.category][event.playerId] = event.base;

@@ -8,7 +8,6 @@ import 'package:queendomino_counter/ui/viewmodels/scoring_screen_viewmodel.dart'
 import 'package:queendomino_counter/utils/scoring.dart';
 import 'package:queendomino_counter/widgets/app_drawer.dart';
 import 'package:queendomino_counter/widgets/scoringUnit.dart';
-import 'package:table_sticky_headers/table_sticky_headers.dart';
 
 class ScoringScreenPresenter extends StatefulWidget {
   @override

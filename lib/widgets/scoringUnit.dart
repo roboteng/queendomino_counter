@@ -51,7 +51,9 @@ class _ScoringUnitState extends State<ScoringUnit> {
               setState(() {
                 scores = results;
                 int val = subScore(
-                    scores, getCategoryProperties(widget.category).calculate);
+                  scores,
+                  getCategoryProperties(widget.category).calculate,
+                );
                 widget.onChange(val);
                 label = val.toString();
               });
