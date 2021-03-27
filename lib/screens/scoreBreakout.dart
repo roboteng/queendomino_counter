@@ -5,9 +5,9 @@ import 'package:queendomino_counter/widgets/scorePair.dart';
 
 class BreakoutScreen extends StatefulWidget {
   final List<List<int>> scores;
-  final String title;
+  final Category category;
 
-  BreakoutScreen({Key key, this.scores, this.title}) : super(key: key);
+  BreakoutScreen({Key key, this.scores, this.category}) : super(key: key);
 
   @override
   _BreakoutScreenState createState() => _BreakoutScreenState();
@@ -42,7 +42,7 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
   }
 
   Widget columnChildren(BuildContext context, int i) {
-    var properties = getCategoryProperties(widget.title);
+    var properties = getCategoryProperties(widget.category);
 
     if (i < isVisible.length) {
       if (isVisible[i]) {
@@ -54,8 +54,8 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
                 onChange: (items) {
                   scores[i] = items;
                 },
-                icon: properties[ICON],
-                isPair: properties[EDITABLE],
+                icon: properties.icon,
+                isPair: properties.editable,
               ),
             ),
             IconButton(
@@ -79,8 +79,11 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
             icon: Icon(Icons.add),
             onPressed: () {
               setState(() {
-                scores
-                    .add([0, getCategoryProperties(widget.title)[SECOND] ?? 0]);
+                scores.add([
+                  0,
+                  getCategoryProperties(widget.category).isSecondSlotEditable ??
+                      0
+                ]);
                 isVisible.add(true);
               });
             },
@@ -94,7 +97,7 @@ class _BreakoutScreenState extends State<BreakoutScreen> {
   Widget build(BuildContext context) {
     assert(scores.length == isVisible.length);
     return SimpleDialog(
-      title: Text(widget.title ?? 'Update Score'),
+      title: Text(widget.category.shortString ?? 'Update Score'),
       children: <Widget>[
         Column(
           children: <Widget>[

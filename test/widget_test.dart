@@ -1,14 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:queendomino_counter/utils/categoryScoring.dart';
 import 'package:queendomino_counter/utils/playerList.dart';
 import 'package:queendomino_counter/utils/scoring.dart';
 
 void main() {
   test('Testing sum of bloc results', () {
+    final wheat = Wheat();
+    final mines = Mines();
+    final forest = Forest();
     ScoringDetails sumTest = ScoringDetails(
       details: {
-        'one': [1, 4],
-        'two': [2, 5],
-        'three': [3, 6]
+        wheat: [1, 4],
+        mines: [2, 5],
+        forest: [3, 6]
       },
     );
     expect(sumTest.total(0), 6);

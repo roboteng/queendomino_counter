@@ -1,3 +1,5 @@
+import 'package:queendomino_counter/utils/categoryScoring.dart';
+
 final String kCoin = 'Coin';
 final String kWheat = 'Wheat';
 final String kForest = 'Forest';
@@ -11,17 +13,17 @@ final String kTowers = 'Towers';
 final String kKnights = 'Knights';
 final String kPoints = 'Points';
 
-final List<String> kCategories = [
-  kCoin,
-  kWheat,
-  kForest,
-  kWater,
-  kPasture,
-  kMarsh,
-  kMines,
-  kBuildings,
-  kPointsPTerritory,
-  kTowers,
-  kKnights,
-  kPoints,
+final List<Category> categories = [
+  Coin(),
+  Wheat(),
+  Forest(),
+  Water(),
+  Pasture(),
+  Marsh(),
+  Mines(),
+  Buildings(),
+  PointsPerTerritory(),
+  Towers(),
+  Knights(),
+  PointsForBuildings(),
 ];

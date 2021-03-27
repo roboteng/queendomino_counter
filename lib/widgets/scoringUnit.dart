@@ -5,10 +5,10 @@ import 'package:queendomino_counter/utils/scoring.dart';
 
 class ScoringUnit extends StatefulWidget {
   final void Function(int) onChange;
-  final String title;
+  final Category category;
   final int playerId;
 
-  ScoringUnit({Key key, this.onChange, this.title, this.playerId})
+  ScoringUnit({Key key, this.onChange, this.category, this.playerId})
       : super(key: key);
   @override
   _ScoringUnitState createState() => _ScoringUnitState();
@@ -22,11 +22,11 @@ class _ScoringUnitState extends State<ScoringUnit> {
   void initState() {
     if (scores == null)
       scores = [
-        [0, getCategoryProperties(widget.title)[SECOND] ?? 0]
+        [0, getCategoryProperties(widget.category).isSecondSlotEditable ?? 0]
       ];
     super.initState();
-    label =
-        subScore(scores, getCategoryProperties(widget.title)[FUNC]).toString();
+    label = subScore(scores, getCategoryProperties(widget.category).calculate)
+        .toString();
   }
 
   @override
@@ -43,15 +43,15 @@ class _ScoringUnitState extends State<ScoringUnit> {
               builder: (BuildContext context) {
                 return BreakoutScreen(
                   scores: scores,
-                  title: widget.title,
+                  category: widget.category,
                 );
               },
             );
             if (results != null) {
               setState(() {
                 scores = results;
-                int val =
-                    subScore(scores, getCategoryProperties(widget.title)[FUNC]);
+                int val = subScore(
+                    scores, getCategoryProperties(widget.category).calculate);
                 widget.onChange(val);
                 label = val.toString();
               });

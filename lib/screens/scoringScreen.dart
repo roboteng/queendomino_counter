@@ -53,22 +53,23 @@ class _ScoringScreenState extends State<ScoringScreen> {
               ScoringDetails details = data;
               return StickyHeadersTable(
                 columnsLength: players.length,
-                rowsLength: kCategories.length + 1, // one more for total
+                rowsLength: categories.length + 1, // one more for total
                 columnsTitleBuilder: (j) => Text(players[j]),
                 rowsTitleBuilder: (i) {
-                  return Text(
-                      i == kCategories.length ? 'Total' : kCategories[i]);
+                  return Text(i == categories.length
+                      ? 'Total'
+                      : categories[i].shortString);
                 },
                 contentCellBuilder: (column, row) {
-                  if (row == kCategories.length) {
+                  if (row == categories.length) {
                     return Text(details.total(column).toString());
                   } else {
                     return ScoringUnit(
-                      title: kCategories[row],
+                      category: categories[row],
                       onChange: (newVal) {
                         BlocProvider.of<ScoringBloc>(context).add(
                           ScoringEvent(
-                            type: kCategories[row],
+                            category: categories[row],
                             base: newVal,
                             playerId: column,
                           ),

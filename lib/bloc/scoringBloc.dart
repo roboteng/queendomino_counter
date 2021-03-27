@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:queendomino_counter/constants/constants.dart';
+import 'package:queendomino_counter/utils/categoryScoring.dart';
 import 'package:queendomino_counter/utils/scoring.dart';
 
 //simple case where only one territory counts
@@ -9,7 +10,7 @@ class ScoringBloc extends Bloc<ScoringEvent, ScoringDetails> {
       : super(
           ScoringDetails(
             details: {
-              for (String category in kCategories) category: [0, 0, 0, 0, 0, 0]
+              for (Category category in categories) category: [0, 0, 0, 0, 0, 0]
             },
           ),
         );
@@ -18,8 +19,8 @@ class ScoringBloc extends Bloc<ScoringEvent, ScoringDetails> {
   Stream<ScoringDetails> mapEventToState(ScoringEvent event) async* {
     print(event);
     if (event.numPlayers == null) {
-      Map<String, List<int>> _map = state.details;
-      _map[event.type][event.playerId] = event.base;
+      Map<Category, List<int>> _map = state.details;
+      _map[event.category][event.playerId] = event.base;
       yield ScoringDetails(details: _map);
     } else {
       for (List<int> list in state.details.values) {
