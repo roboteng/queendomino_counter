@@ -66,13 +66,13 @@ class _ScoringScreenState extends State<ScoringScreen> {
                     return ScoringUnit(
                       title: kCategories[row],
                       onChange: (newVal) {
-                        context.bloc<ScoringBloc>().add(
-                              ScoringEvent(
-                                type: kCategories[row],
-                                base: newVal,
-                                playerId: column,
-                              ),
-                            );
+                        BlocProvider.of<ScoringBloc>(context).add(
+                          ScoringEvent(
+                            type: kCategories[row],
+                            base: newVal,
+                            playerId: column,
+                          ),
+                        );
                       },
                     );
                   }
