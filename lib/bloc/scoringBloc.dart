@@ -1,31 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:queendomino_counter/constants/constants.dart';
-import 'package:queendomino_counter/utils/categoryScoring.dart';
+import 'package:queendomino_counter/domain/entities/player_score.dart';
 import 'package:queendomino_counter/utils/scoring.dart';
 
-//simple case where only one territory counts
-//to be turned into a list later
-class ScoringBloc extends Bloc<ScoringEvent, ScoringDetails> {
-  ScoringBloc()
-      : super(
-          ScoringDetails(
-            details: {
-              for (Category category in categories) category: [0, 0, 0, 0, 0, 0]
-            },
-          ),
-        );
-
+class ScoringBloc extends Bloc<ScoringEvent, List<PlayerScore>> {
+  ScoringBloc() : super([PlayerScore(), PlayerScore()]);
   @override
-  Stream<ScoringDetails> mapEventToState(ScoringEvent event) async* {
-    if (event.numPlayers == null) {
-      Map<Category, List<int>> _map = state.details;
-      _map[event.category][event.playerId] = event.base;
-      yield ScoringDetails(details: _map);
-    } else {
-      for (List<int> list in state.details.values) {
-        list.add(0);
-      }
-      yield ScoringDetails(details: state.details);
+  Stream<List<PlayerScore>> mapEventToState(ScoringEvent event) async* {
+    if (event is AddPlayerEvent) {
+      yield state + [PlayerScore()];
+    } else if (event is RemovePlayerEvent) {
+      yield state.sublist(1);
     }
   }
 }

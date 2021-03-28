@@ -28,12 +28,16 @@ dependencies:
   linked_scroll_controller: ^0.1.2
   table_sticky_headers: ^1.1.2
   provider: ^5.0.0
-
+  equatable: ^2.0.0
 
 
 dev_dependencies:
+  test:
+  bloc_test: ^8.0.0
+
   flutter_test:
     sdk: flutter
+
 
 
 # For information on the generic Dart part of this file, see the

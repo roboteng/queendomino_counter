@@ -1,19 +1,10 @@
 import 'package:queendomino_counter/utils/categoryScoring.dart';
 
-class ScoringEvent {
-  int numPlayers;
-  Category category;
-  int base;
-  int playerId;
-  ScoringEvent({this.base, this.category, this.playerId, this.numPlayers})
-      : assert((category == null) ^ (numPlayers == null)),
-        assert((base == null) ^ (numPlayers == null)),
-        assert((playerId == null) ^ (numPlayers == null));
+abstract class ScoringEvent {}
 
-  String toString() {
-    return '$category $playerId, $base';
-  }
-}
+class AddPlayerEvent extends ScoringEvent {}
+
+class RemovePlayerEvent extends ScoringEvent {}
 
 /// A map between each category, and the scores for all players in that category
 class ScoringDetails {
