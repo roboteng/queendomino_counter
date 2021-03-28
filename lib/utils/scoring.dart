@@ -1,10 +1,17 @@
+import 'package:queendomino_counter/domain/entities/player.dart';
 import 'package:queendomino_counter/utils/categoryScoring.dart';
 
 abstract class ScoringEvent {}
 
-class AddPlayerEvent extends ScoringEvent {}
+class AddPlayerEvent extends ScoringEvent {
+  final Player player;
+  AddPlayerEvent(this.player);
+}
 
-class RemovePlayerEvent extends ScoringEvent {}
+class RemovePlayerEvent extends ScoringEvent {
+  final Player player;
+  RemovePlayerEvent(this.player);
+}
 
 /// A map between each category, and the scores for all players in that category
 class ScoringDetails {
