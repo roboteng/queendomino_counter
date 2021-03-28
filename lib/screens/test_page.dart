@@ -1,16 +1,31 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 final double legendHeight = 40.0;
 final double legendWidth = 100.0;
-final double cellHeight = 30.0;
+final double cellHeight = 48.0;
 final double cellWidth = 100.0;
 
-final int xSize = 6;
-final int ySize = 30;
-
 class DynamicTable extends StatefulWidget {
+  final int columnsLength;
+  final int rowsLength;
+  final Widget Function(int) columnsTitleBuilder;
+  final Widget Function(int) rowsTitleBuilder;
+  final Widget Function(int) footerBuilder;
+  final Widget Function(int, int) contentCellBuilder;
+  final Widget northWestTitle;
+  final Widget southWestTitle;
+
+  const DynamicTable({
+    Key key,
+    this.columnsLength,
+    this.rowsLength,
+    this.columnsTitleBuilder,
+    this.rowsTitleBuilder,
+    this.footerBuilder,
+    this.contentCellBuilder,
+    this.southWestTitle,
+    this.northWestTitle,
+  }) : super(key: key);
   @override
   _DynamicTableState createState() => _DynamicTableState();
 }
@@ -41,55 +56,61 @@ class _DynamicTableState extends State<DynamicTable> {
       _horizontalBodyController,
       _horizontalFooterController
     ]);
-    headerKeys = List.generate(xSize, (index) => GlobalKey());
-    dataKeys =
-        List.generate(xSize, (x) => List.generate(ySize, (y) => GlobalKey()));
+    headerKeys = List.generate(widget.columnsLength, (index) => GlobalKey());
+    dataKeys = List.generate(widget.columnsLength,
+        (x) => List.generate(widget.rowsLength, (y) => GlobalKey()));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('QueenDomino Counter'),
-      ),
-      body: Column(
-        children: [
-          Header(
-            controller: _horizontalTitleController,
-            hSync: _horizontalSyncController,
-            keys: headerKeys,
+    return Column(
+      children: [
+        _Header(
+          controller: _horizontalTitleController,
+          hSync: _horizontalSyncController,
+          keys: headerKeys,
+          columnTitleBuilder: widget.columnsTitleBuilder,
+          columnsLength: widget.columnsLength,
+          leading: widget.northWestTitle,
+        ),
+        Expanded(
+          child: Row(
+            children: [
+              _Sider(
+                controller: _verticalTitleController,
+                vSync: _verticalSyncController,
+                rowsLength: widget.rowsLength,
+                rowTitleBuilder: widget.rowsTitleBuilder,
+              ),
+              _DataSection(
+                hController: _horizontalBodyController,
+                vController: _verticalBodyController,
+                hSync: _horizontalSyncController,
+                vSync: _verticalSyncController,
+                rowsLength: widget.rowsLength,
+                columnsLength: widget.columnsLength,
+                contentCellBuilder: widget.contentCellBuilder,
+              ),
+            ],
           ),
-          Expanded(
-            child: Row(
-              children: [
-                Sider(
-                  controller: _verticalTitleController,
-                  vSync: _verticalSyncController,
-                ),
-                DataSection(
-                  hController: _horizontalBodyController,
-                  vController: _verticalBodyController,
-                  hSync: _horizontalSyncController,
-                  vSync: _verticalSyncController,
-                ),
-              ],
-            ),
-          ),
-          Footer(
-            controller: _horizontalFooterController,
-            hSync: _horizontalSyncController,
-            keys: headerKeys,
-          ),
-        ],
-      ),
+        ),
+        _Footer(
+          controller: _horizontalFooterController,
+          hSync: _horizontalSyncController,
+          keys: headerKeys,
+          columnsLength: widget.columnsLength,
+          footerBuilder: widget.footerBuilder,
+          leading: widget.southWestTitle,
+        ),
+      ],
     );
   }
 }
 
-class ColumnHeader extends StatelessWidget {
+class _ColumnHeader extends StatelessWidget {
   final Widget child;
 
-  const ColumnHeader({
+  const _ColumnHeader({
     Key key,
     this.child,
   }) : super(key: key);
@@ -106,13 +127,23 @@ class ColumnHeader extends StatelessWidget {
   }
 }
 
-class Header extends StatelessWidget {
+class _Header extends StatelessWidget {
   final ScrollController controller;
   final _SyncScrollController hSync;
   final List<Key> keys;
+  final Widget Function(int) columnTitleBuilder;
+  final int columnsLength;
+  final Widget leading;
 
-  const Header({Key key, this.controller, this.hSync, this.keys})
-      : super(key: key);
+  const _Header({
+    Key key,
+    this.controller,
+    this.hSync,
+    this.keys,
+    this.columnTitleBuilder,
+    this.columnsLength,
+    this.leading,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +153,7 @@ class Header extends StatelessWidget {
           width: legendWidth,
           height: legendHeight,
           child: Center(
-            child: Text('Legend'),
+            child: leading,
           ),
         ),
         Expanded(
@@ -132,10 +163,10 @@ class Header extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: List.generate(
-                  xSize,
-                  (i) => ColumnHeader(
+                  columnsLength,
+                  (i) => _ColumnHeader(
                     key: keys[i],
-                    child: Text('Header ${pow(2, i)}'),
+                    child: columnTitleBuilder(i),
                   ),
                 ),
               ),
@@ -154,11 +185,19 @@ class Header extends StatelessWidget {
   }
 }
 
-class Sider extends StatelessWidget {
+class _Sider extends StatelessWidget {
   final ScrollController controller;
   final _SyncScrollController vSync;
+  final Widget Function(int) rowTitleBuilder;
+  final int rowsLength;
 
-  const Sider({Key key, this.controller, this.vSync}) : super(key: key);
+  const _Sider({
+    Key key,
+    this.controller,
+    this.vSync,
+    this.rowTitleBuilder,
+    this.rowsLength,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -167,12 +206,12 @@ class Sider extends StatelessWidget {
         controller: controller,
         child: Column(
           children: List.generate(
-            ySize,
+            rowsLength,
             (i) => SizedBox(
               width: legendWidth,
               height: cellHeight,
               child: Center(
-                child: Text('Row ${i + 1}'),
+                child: rowTitleBuilder(i),
               ),
             ),
           ),
@@ -189,13 +228,23 @@ class Sider extends StatelessWidget {
   }
 }
 
-class Footer extends StatelessWidget {
+class _Footer extends StatelessWidget {
   final ScrollController controller;
   final _SyncScrollController hSync;
   final List<Key> keys;
+  final Widget Function(int) footerBuilder;
+  final int columnsLength;
+  final Widget leading;
 
-  const Footer({Key key, this.controller, this.hSync, this.keys})
-      : super(key: key);
+  const _Footer({
+    Key key,
+    this.controller,
+    this.hSync,
+    this.keys,
+    this.footerBuilder,
+    this.columnsLength,
+    this.leading,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -205,9 +254,7 @@ class Footer extends StatelessWidget {
           width: legendWidth,
           height: legendHeight,
           child: Center(
-            child: TextButton(
-              child: Text('Legend'),
-            ),
+            child: leading,
           ),
         ),
         Expanded(
@@ -217,12 +264,9 @@ class Footer extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: List.generate(
-                  xSize,
-                  (i) => ColumnHeader(
-                    child: ElevatedButton(
-                      child: Text('Footer ${i + 1}'),
-                      onPressed: () => getSize(keys[i]),
-                    ),
+                  columnsLength,
+                  (i) => _ColumnHeader(
+                    child: footerBuilder(i),
                   ),
                 ),
               ),
@@ -241,15 +285,25 @@ class Footer extends StatelessWidget {
   }
 }
 
-class DataSection extends StatelessWidget {
+class _DataSection extends StatelessWidget {
   final ScrollController hController;
   final ScrollController vController;
   final _SyncScrollController hSync;
   final _SyncScrollController vSync;
+  final Widget Function(int, int) contentCellBuilder;
+  final int columnsLength;
+  final int rowsLength;
 
-  const DataSection(
-      {Key key, this.hController, this.vController, this.vSync, this.hSync})
-      : super(key: key);
+  const _DataSection({
+    Key key,
+    this.hController,
+    this.vController,
+    this.vSync,
+    this.hSync,
+    this.contentCellBuilder,
+    this.columnsLength,
+    this.rowsLength,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -262,17 +316,14 @@ class DataSection extends StatelessWidget {
               controller: vController,
               child: Column(
                 children: List.generate(
-                  ySize,
+                  rowsLength,
                   (y) => Row(
                     children: List.generate(
-                        xSize,
+                        columnsLength,
                         (x) => SizedBox(
-                              width: cellWidth,
-                              height: cellHeight,
-                              child: Center(
-                                child: Text('$x, $y'),
-                              ),
-                            )),
+                            width: cellWidth,
+                            height: cellHeight,
+                            child: contentCellBuilder(x, y))),
                   ),
                 ),
               ),
@@ -298,11 +349,11 @@ class DataSection extends StatelessWidget {
   }
 }
 
-//copied from table_sticky_header
 class _SyncScrollController {
   _SyncScrollController(List<ScrollController> controllers) {
-    controllers
-        .forEach((controller) => _registeredScrollControllers.add(controller));
+    controllers.forEach(
+      (controller) => _registeredScrollControllers.add(controller),
+    );
   }
 
   final List<ScrollController> _registeredScrollControllers = [];
@@ -333,9 +384,4 @@ class _SyncScrollController {
       }
     }
   }
-}
-
-void getSize(GlobalKey key) {
-  Size size = key.currentContext.size;
-  print(size);
 }

@@ -15,7 +15,7 @@ class ScoringScreenPresenter extends StatefulWidget {
 }
 
 class _ScoringScreenPresenterState extends State<ScoringScreenPresenter> {
-  List<String> playerNames = ['Trevor', 'Karen'];
+  List<String> playerNames = ['Trevor', 'Karen', 'Franklin'];
 
   @override
   Widget build(BuildContext context) {
