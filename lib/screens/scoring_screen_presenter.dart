@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:queendomino_counter/bloc/scoringBloc.dart';
-import 'package:queendomino_counter/constants/constants.dart';
+import 'package:queendomino_counter/domain/entities/player_score.dart';
 import 'package:queendomino_counter/screens/settingsModal.dart';
 import 'package:queendomino_counter/ui/scoring_screen_display.dart';
-import 'package:queendomino_counter/ui/viewmodels/scoring_screen_viewmodel.dart';
-import 'package:queendomino_counter/utils/scoring.dart';
+import 'package:queendomino_counter/ui/scoring_screen_viewmodel_generator.dart';
 import 'package:queendomino_counter/widgets/app_drawer.dart';
-import 'package:queendomino_counter/widgets/scoringUnit.dart';
 
 class ScoringScreenPresenter extends StatefulWidget {
   @override
@@ -46,34 +44,9 @@ class _ScoringScreenPresenterState extends State<ScoringScreenPresenter> {
           )
         ],
       ),
-      body: BlocBuilder<ScoringBloc, ScoringDetails>(
-        builder: (context, details) => ScoringScreenDisplay(
-          ScoringScreenViewmodel(
-            columnTitles: playerNames,
-            rowTitles: categories.map((c) => c.shortString).toList(),
-            footerTitles: List.generate(playerNames.length, (i) => i)
-                .map((e) => details.total(e).toString())
-                .toList(),
-            cells: categories
-                .map(
-                  (category) => List.generate(
-                    playerNames.length,
-                    (playerIndex) => ScoringUnit(
-                      category: category,
-                      onChange: (newVal) {
-                        BlocProvider.of<ScoringBloc>(context).add(
-                          ScoringEvent(
-                            category: category,
-                            base: newVal,
-                            playerId: playerIndex,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
+      body: BlocBuilder<ScoringBloc, List<PlayerScore>>(
+        builder: (context, scores) => ScoringScreenDisplay(
+          ScoringScreenViewmodelGenerator().generate(scores),
         ),
       ),
     );
