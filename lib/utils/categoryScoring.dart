@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:queendomino_counter/constants/constants.dart';
 
@@ -18,6 +19,14 @@ class ScoringInfo {
 abstract class Category {
   ScoringInfo getProperties();
   String get shortString;
+
+  @override
+  bool operator ==(Object other) {
+    return super.runtimeType == other.runtimeType;
+  }
+
+  @override
+  int get hashCode => this.runtimeType.hashCode;
 }
 
 class Coin extends Category {

@@ -13,6 +13,12 @@ class ScoringBloc extends Bloc<ScoringEvent, List<PlayerScore>> {
       yield state + [PlayerScore(event.player)];
     } else if (event is RemovePlayerEvent) {
       yield state..removeWhere((p) => p.player == event.player);
+    } else if (event is UpdateScoreEvent) {
+      state
+          .firstWhere((element) => element.player == event.player)
+          .details
+          .details[event.category] = event.value;
+      yield state.map((e) => e).toList();
     } else {
       yield state;
     }

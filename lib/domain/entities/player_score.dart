@@ -1,12 +1,14 @@
 import 'package:equatable/equatable.dart';
+import 'package:queendomino_counter/utils/scoring.dart';
 
 import 'player.dart';
 
 class PlayerScore extends Equatable {
   final Player player;
-  PlayerScore(this.player);
+  final ScoringDetails details;
+  PlayerScore(this.player) : this.details = ScoringDetails();
 
-  get total => 0;
+  int get total => details.total;
   @override
-  List<Object> get props => [player];
+  List<Object> get props => [player, details];
 }
