@@ -19,11 +19,21 @@ class ScoringScreenDisplay extends StatelessWidget {
         contentCellBuilder: (x, y) {
           return OutlinedButton(
             onPressed: model.cellOnTap[y][x],
-            child: Text(model.cellLabels[y][x]),
+            child: Text(
+              model.cellLabels[y][x],
+              semanticsLabel:
+                  "${model.cellLabels[y][x]} ${model.rowTitles[y]} for ${model.columnTitles[x]}",
+            ),
           );
         },
         footerBuilder: (x) {
-          return Text(model.footerTitles[x]);
+          return Semantics(
+            child: Text(
+              model.footerTitles[x],
+              semanticsLabel:
+                  "${model.footerTitles[x]} for ${model.columnTitles[x]}",
+            ),
+          );
         },
         southWestTitle: Text('Total'),
       ),

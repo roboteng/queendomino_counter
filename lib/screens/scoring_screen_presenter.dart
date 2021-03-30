@@ -29,6 +29,7 @@ class _ScoringScreenPresenterState extends State<ScoringScreenPresenter> {
         ),
         actions: <Widget>[
           IconButton(
+            icon: Icon(Icons.person_add_alt, semanticLabel: "Change Players"),
             onPressed: () async {
               List<String> newPlayerNames = await showDialog(
                 context: context,
@@ -43,7 +44,6 @@ class _ScoringScreenPresenterState extends State<ScoringScreenPresenter> {
                 });
               }
             },
-            icon: Icon(Icons.person_add_alt),
           )
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:queendomino_counter/utils/playerList.dart';
 import 'package:queendomino_counter/widgets/saveCancel.dart';
@@ -63,7 +64,10 @@ class _SettingsModalState extends State<SettingsModal> {
             ),
           ),
           trailing: TextButton(
-            child: Icon(Icons.remove),
+            child: Icon(
+              Icons.remove,
+              semanticLabel: "Remove ${players[index].name}",
+            ),
             onPressed: () {
               setState(() {
                 players[index].delete();
@@ -88,7 +92,10 @@ class _SettingsModalState extends State<SettingsModal> {
             players[index].name = val;
           }));
         },
-        trailing: Icon(Icons.add),
+        trailing: Icon(
+          Icons.add,
+          semanticLabel: "Add New Player",
+        ),
       );
     }
   }
@@ -96,18 +103,22 @@ class _SettingsModalState extends State<SettingsModal> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: Text('Modal Content'),
+      contentPadding: EdgeInsets.all(8.0),
+      title: Semantics(
+        explicitChildNodes: true,
+        header: true,
+        child: Text('Edit Players'),
+      ),
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(children: <Widget>[
+        Column(
+          children: <Widget>[
             for (int i in Iterable.generate(players.length + 1))
-              columnChildren(i)
-          ]),
-        ),
-        SaveCancelOptions(
-          returnParams: () => getPlayers(players),
-        ),
+              columnChildren(i),
+            SaveCancelOptions(
+              returnParams: () => getPlayers(players),
+            ),
+          ],
+        )
       ],
     );
   }
