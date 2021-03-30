@@ -100,5 +100,21 @@ void main() {
       expect(l.length, 2);
       expect(l[1][0].total, 2);
     });
+
+    test("Players name should update, if given the correct PlayerChangeEvent",
+        () async {
+      bloc.add(ChangePlayerEvent(Player("Player 1"), Player("Trevor")));
+      bloc.close();
+      final state = (await bloc.stream.toList())[0];
+      expect(state.length, 2);
+      expect(state[0].player, Player("Trevor"));
+    });
+
+    test("if player given that doesn't exists, nothig should happen", () async {
+      bloc.add(ChangePlayerEvent(Player("Bad Name"), Player("Trevor")));
+      bloc.close();
+      final l = await bloc.stream.toList();
+      expect(l.length, 0);
+    });
   });
 }

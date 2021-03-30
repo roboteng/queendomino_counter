@@ -6,7 +6,9 @@ import 'player.dart';
 class PlayerScore extends Equatable {
   final Player player;
   final ScoringDetails details;
-  PlayerScore(this.player) : this.details = ScoringDetails();
+
+  PlayerScore(this.player, [ScoringDetails details])
+      : this.details = details ?? ScoringDetails();
 
   int get total => details.total;
   @override

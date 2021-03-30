@@ -19,6 +19,14 @@ class ScoringBloc extends Bloc<ScoringEvent, List<PlayerScore>> {
           .details
           .details[event.category] = event.value;
       yield state.map((e) => e).toList();
+    } else if (event is ChangePlayerEvent) {
+      final playerIndex =
+          state.indexWhere((element) => element.player == event.oldPlayerName);
+      if (playerIndex != -1) {
+        state[playerIndex] =
+            PlayerScore(event.newPlayerName, state[playerIndex].details);
+        yield state;
+      }
     } else {
       yield state;
     }

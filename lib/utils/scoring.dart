@@ -13,6 +13,12 @@ class RemovePlayerEvent extends ScoringEvent {
   RemovePlayerEvent(this.player);
 }
 
+class ChangePlayerEvent extends ScoringEvent {
+  final Player oldPlayerName;
+  final Player newPlayerName;
+  ChangePlayerEvent(this.oldPlayerName, this.newPlayerName);
+}
+
 class UpdateScoreEvent extends ScoringEvent {
   final Player player;
   final Category category;
