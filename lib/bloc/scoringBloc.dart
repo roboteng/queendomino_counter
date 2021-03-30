@@ -9,26 +9,9 @@ class ScoringBloc extends Bloc<ScoringEvent, List<PlayerScore>> {
             [PlayerScore(Player("Player 1")), PlayerScore(Player("Player 2"))]);
   @override
   Stream<List<PlayerScore>> mapEventToState(ScoringEvent event) async* {
-    if (event is AddPlayerEvent) {
-      yield state + [PlayerScore(event.player)];
-    } else if (event is RemovePlayerEvent) {
-      yield state..removeWhere((p) => p.player == event.player);
-    } else if (event is UpdateScoreEvent) {
-      state
-          .firstWhere((element) => element.player == event.player)
-          .details
-          .details[event.category] = event.value;
-      yield state.map((e) => e).toList();
-    } else if (event is ChangePlayerEvent) {
-      final playerIndex =
-          state.indexWhere((element) => element.player == event.oldPlayerName);
-      if (playerIndex != -1) {
-        state[playerIndex] =
-            PlayerScore(event.newPlayerName, state[playerIndex].details);
-        yield state;
-      }
-    } else {
-      yield state;
+    final result = event.getNextState(state);
+    if (result != null) {
+      yield result;
     }
   }
 }

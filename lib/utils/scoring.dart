@@ -1,22 +1,48 @@
 import 'package:queendomino_counter/domain/entities/player.dart';
+import 'package:queendomino_counter/domain/entities/player_score.dart';
 import 'package:queendomino_counter/utils/categoryScoring.dart';
 
-abstract class ScoringEvent {}
+abstract class ScoringEvent {
+  List<PlayerScore> getNextState(List<PlayerScore> oldState);
+}
 
 class AddPlayerEvent extends ScoringEvent {
   final Player player;
   AddPlayerEvent(this.player);
+
+  @override
+  List<PlayerScore> getNextState(List<PlayerScore> oldState) {
+    return oldState + [PlayerScore(player)];
+  }
 }
 
 class RemovePlayerEvent extends ScoringEvent {
   final Player player;
   RemovePlayerEvent(this.player);
+
+  @override
+  List<PlayerScore> getNextState(List<PlayerScore> oldState) {
+    return oldState..removeWhere((p) => p.player == player);
+  }
 }
 
 class ChangePlayerEvent extends ScoringEvent {
   final Player oldPlayerName;
   final Player newPlayerName;
   ChangePlayerEvent(this.oldPlayerName, this.newPlayerName);
+
+  @override
+  List<PlayerScore> getNextState(List<PlayerScore> oldState) {
+    var state = oldState;
+    final playerIndex =
+        state.indexWhere((element) => element.player == oldPlayerName);
+    if (playerIndex != -1) {
+      state[playerIndex] =
+          PlayerScore(newPlayerName, state[playerIndex].details);
+      return state;
+    }
+    return null;
+  }
 }
 
 class UpdateScoreEvent extends ScoringEvent {
@@ -25,6 +51,15 @@ class UpdateScoreEvent extends ScoringEvent {
   final int value;
 
   UpdateScoreEvent(this.player, this.category, this.value);
+
+  @override
+  List<PlayerScore> getNextState(List<PlayerScore> oldState) {
+    oldState
+        .firstWhere((element) => element.player == player)
+        .details
+        .details[category] = value;
+    return oldState.map((e) => e).toList();
+  }
 }
 
 /// A map between each category, and the scores for that category
