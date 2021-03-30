@@ -54,7 +54,11 @@ void main() {
 
     test('cells should have onTap', () {
       expect(
-        g.generate([PlayerScore(Player("Player 1"))]).cellOnTap.length,
+        g
+            .generate([PlayerScore(Player("Player 1"))],
+                (Category c, PlayerScore score) => () {})
+            .cellOnTap
+            .length,
         categories.length,
       );
     });

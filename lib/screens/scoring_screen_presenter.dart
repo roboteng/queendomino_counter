@@ -5,6 +5,7 @@ import 'package:queendomino_counter/domain/entities/player_score.dart';
 import 'package:queendomino_counter/screens/settingsModal.dart';
 import 'package:queendomino_counter/ui/scoring_screen_display.dart';
 import 'package:queendomino_counter/ui/scoring_screen_viewmodel_generator.dart';
+import 'package:queendomino_counter/utils/scoring.dart';
 import 'package:queendomino_counter/widgets/app_drawer.dart';
 
 class ScoringScreenPresenter extends StatefulWidget {
@@ -46,7 +47,13 @@ class _ScoringScreenPresenterState extends State<ScoringScreenPresenter> {
       ),
       body: BlocBuilder<ScoringBloc, List<PlayerScore>>(
         builder: (context, scores) => ScoringScreenDisplay(
-          ScoringScreenViewmodelGenerator().generate(scores),
+          ScoringScreenViewmodelGenerator().generate(
+            scores,
+            (c, s) => () {
+              BlocProvider.of<ScoringBloc>(context, listen: false)
+                  .add(UpdateScoreEvent(s.player, c, 10));
+            },
+          ),
         ),
       ),
     );
