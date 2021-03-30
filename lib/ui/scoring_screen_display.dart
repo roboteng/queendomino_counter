@@ -18,7 +18,7 @@ class ScoringScreenDisplay extends StatelessWidget {
             Text(y == model.rowTitles.length ? 'Total' : model.rowTitles[y]),
         contentCellBuilder: (x, y) {
           return OutlinedButton(
-            onPressed: () {},
+            onPressed: model.cellOnTap[y][x],
             child: Text(model.cellLabels[y][x]),
           );
         },

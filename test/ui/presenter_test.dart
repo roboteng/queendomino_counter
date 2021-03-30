@@ -51,5 +51,12 @@ void main() {
     test('cells length should be as long as categories', () {
       expect(g.generate([]).cellLabels.length, categories.length);
     });
+
+    test('cells should have onTap', () {
+      expect(
+        g.generate([PlayerScore(Player("Player 1"))]).cellOnTap.length,
+        categories.length,
+      );
+    });
   });
 }
