@@ -1,19 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:queendomino_counter/domain/entities/player.dart';
 import 'package:queendomino_counter/utils/playerList.dart';
+import 'package:queendomino_counter/utils/scoring.dart';
 import 'package:queendomino_counter/widgets/saveCancel.dart';
 
-class SettingsModal extends StatefulWidget {
-  final List<String> players;
+class EditPlayersModal extends StatefulWidget {
+  final List<Player> players;
 
-  const SettingsModal({Key key, this.players}) : super(key: key);
+  const EditPlayersModal({Key key, this.players}) : super(key: key);
 
   @override
-  _SettingsModalState createState() => _SettingsModalState();
+  _EditPlayersModalState createState() => _EditPlayersModalState();
 }
 
-class _SettingsModalState extends State<SettingsModal> {
-  List<DeletablePlayer> players;
+class _EditPlayersModalState extends State<EditPlayersModal> {
+  List<ScoringEvent> changes = [];
   List<TextEditingController> _controllers;
 
   TextEditingController makeController(
@@ -30,23 +32,10 @@ class _SettingsModalState extends State<SettingsModal> {
 
   @override
   void initState() {
-    players = widget.players
-        .map<DeletablePlayer>((String name) => DeletablePlayer(name))
-        .toList();
     _controllers = [];
-    for (int i = 0; i < players.length; i++) {
-      if (players[i].isDeleted) {
-        _controllers.add(null);
-      } else {
-        _controllers.add(
-          makeController(
-            players[i].name,
-            (String val) {
-              players[i].name = val;
-            },
-          ),
-        );
-      }
+    for (var p in widget.players) {
+      _controllers.add(TextEditingController());
+      _controllers.last.text = p.name;
     }
     super.initState();
   }
@@ -115,7 +104,7 @@ class _SettingsModalState extends State<SettingsModal> {
             for (int i in Iterable.generate(players.length + 1))
               columnChildren(i),
             SaveCancelOptions(
-              returnParams: () => getPlayers(players),
+              returnParams: () => changes,
             ),
           ],
         )

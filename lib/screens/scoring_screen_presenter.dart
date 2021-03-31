@@ -34,8 +34,11 @@ class _ScoringScreenPresenterState extends State<ScoringScreenPresenter> {
               List<String> newPlayerNames = await showDialog(
                 context: context,
                 barrierDismissible: false,
-                builder: (context) => SettingsModal(
-                  players: playerNames,
+                builder: (context) => EditPlayersModal(
+                  players: BlocProvider.of<ScoringBloc>(context, listen: false)
+                      .state
+                      .map((e) => e.player)
+                      .toList(),
                 ),
               );
               if (newPlayerNames != null) {

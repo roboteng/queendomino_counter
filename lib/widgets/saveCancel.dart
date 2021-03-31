@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SaveCancelOptions extends StatelessWidget {
-  final Function returnParams;
+class SaveCancelOptions<T> extends StatelessWidget {
+  final T Function() returnParams;
 
   const SaveCancelOptions({Key key, this.returnParams}) : super(key: key);
 
