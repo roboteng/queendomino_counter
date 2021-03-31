@@ -116,5 +116,27 @@ void main() {
       final l = await bloc.stream.toList();
       expect(l.length, 0);
     });
+    test(
+        "Players name should update, if given the correct PlayerChangeEvent, after a lot of events",
+        () async {
+      bloc.add(ChangePlayerEvent(Player("Player 1"), Player("Player ")));
+      bloc.add(ChangePlayerEvent(Player("Player "), Player("Player")));
+      bloc.add(ChangePlayerEvent(Player("Player"), Player("Playe")));
+      bloc.add(ChangePlayerEvent(Player("Playe"), Player("Play")));
+      bloc.add(ChangePlayerEvent(Player("Play"), Player("Pla")));
+      bloc.add(ChangePlayerEvent(Player("Pla"), Player("Pl")));
+      bloc.add(ChangePlayerEvent(Player("Pl"), Player("P")));
+      bloc.add(ChangePlayerEvent(Player("P"), Player("")));
+      bloc.add(ChangePlayerEvent(Player(""), Player("T")));
+      bloc.add(ChangePlayerEvent(Player("T"), Player("Tr")));
+      bloc.add(ChangePlayerEvent(Player("Tr"), Player("Tre")));
+      bloc.add(ChangePlayerEvent(Player("Tre"), Player("Trev")));
+      bloc.add(ChangePlayerEvent(Player("Trev"), Player("Trevo")));
+      bloc.add(ChangePlayerEvent(Player("Trevo"), Player("Trevor")));
+      bloc.close();
+      final state = (await bloc.stream.toList()).last;
+      expect(state.length, 2);
+      expect(state[0].player, Player("Trevor"));
+    });
   });
 }
