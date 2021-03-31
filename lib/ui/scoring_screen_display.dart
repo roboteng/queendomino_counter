@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:queendomino_counter/screens/test_page.dart';
+import 'package:queendomino_counter/screens/dynamic_table.dart';
 import 'package:queendomino_counter/ui/viewmodels/scoring_screen_viewmodel.dart';
 
 class ScoringScreenDisplay extends StatelessWidget {

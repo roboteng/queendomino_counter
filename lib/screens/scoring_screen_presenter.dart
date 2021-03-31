@@ -31,7 +31,7 @@ class _ScoringScreenPresenterState extends State<ScoringScreenPresenter> {
           IconButton(
             icon: Icon(Icons.person_add_alt, semanticLabel: "Change Players"),
             onPressed: () async {
-              List<String> newPlayerNames = await showDialog(
+              List<ScoringEvent> events = await showDialog(
                 context: context,
                 barrierDismissible: false,
                 builder: (context) => EditPlayersModal(
@@ -41,11 +41,9 @@ class _ScoringScreenPresenterState extends State<ScoringScreenPresenter> {
                       .toList(),
                 ),
               );
-              if (newPlayerNames != null) {
-                setState(() {
-                  playerNames = newPlayerNames;
-                });
-              }
+              events?.forEach((event) {
+                BlocProvider.of<ScoringBloc>(context, listen: false).add(event);
+              });
             },
           )
         ],

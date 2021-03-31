@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:queendomino_counter/providers/mode_provider.dart';
-import 'package:queendomino_counter/screens/test_page.dart';
+import 'package:queendomino_counter/screens/dynamic_table.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
