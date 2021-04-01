@@ -47,10 +47,10 @@ class _DynamicTableState extends State<DynamicTable> {
   @override
   void initState() {
     super.initState();
-    init();
+    _init();
   }
 
-  void init() {
+  void _init() {
     _verticalSyncController = _SyncScrollController([
       _verticalTitleController,
       _verticalBodyController,
@@ -68,7 +68,7 @@ class _DynamicTableState extends State<DynamicTable> {
   @override
   void didUpdateWidget(covariant DynamicTable oldWidget) {
     super.didUpdateWidget(oldWidget);
-    init();
+    _init();
   }
 
   @override

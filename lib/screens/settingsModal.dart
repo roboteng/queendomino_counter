@@ -13,7 +13,7 @@ class EditPlayersModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<EditPlayersModalState>(
-        create: (_) => EditPlayersModalState(players),
+        create: (_) => EditPlayersModalState(players)..init(),
         builder: (context, snapshot) {
           return Builder(builder: (context) {
             final state = context.watch<EditPlayersModalState>();

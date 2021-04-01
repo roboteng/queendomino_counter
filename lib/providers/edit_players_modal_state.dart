@@ -15,6 +15,7 @@ class EditPlayersModalState extends ChangeNotifier {
   void init() {
     controllers.forEach((controller) {
       controller.addListener(() {
+        print("Listener called");
         final i = controllers.indexOf(controller);
         final newPlayer = Player(controller.text);
         changes.add(ChangePlayerEvent(players[i], newPlayer));
