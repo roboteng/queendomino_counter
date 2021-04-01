@@ -63,4 +63,15 @@ void main() {
       );
     });
   });
+  //
+  // group("Testing with more than two players", () {
+  //   test("shouldn't fail with three players", () {
+  //     final scores = List.generate(3, (i) => PlayerScore(Player("$i")));
+  //     final vm = ScoringScreenViewmodelGenerator().generate(scores);
+  //     expect(vm.columnTitles.length, 3);
+  //     expect(vm.cellLabels[0].length, 3);
+  //     expect(vm.cellOnTap[0].length, 3);
+  //     expect(vm.footerTitles.length, 3);
+  //   });
+  // });
 }

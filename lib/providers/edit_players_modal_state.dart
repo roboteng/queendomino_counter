@@ -12,6 +12,18 @@ class EditPlayersModalState extends ChangeNotifier {
       : this.controllers =
             players.map((e) => TextEditingController()..text = e.name).toList();
 
+  void init() {
+    controllers.forEach((controller) {
+      controller.addListener(() {
+        final i = controllers.indexOf(controller);
+        final newPlayer = Player(controller.text);
+        changes.add(ChangePlayerEvent(players[i], newPlayer));
+        players[i] = newPlayer;
+        //notifyListeners();
+      });
+    });
+  }
+
   void createNewPlayer() {
     players.add(Player(getNextPlayerName(players.map((e) => e.name).toList())));
     changes.add(AddPlayerEvent(players.last));

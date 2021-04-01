@@ -36,5 +36,35 @@ void main() {
         Player("Player 2"),
       );
     });
+
+    test('Updating a players name should add an event to the list', () {
+      state.init();
+      state.controllers[0].text = "Player 12";
+      expect(state.changes.length, 1);
+      expect(state.changes[0], isA<ChangePlayerEvent>());
+      expect(
+        (state.changes[0] as ChangePlayerEvent).oldPlayerName,
+        Player("Player 1"),
+      );
+      expect(
+        (state.changes[0] as ChangePlayerEvent).newPlayerName,
+        Player("Player 12"),
+      );
+    });
+    test('Updating a players name twice should add two events to the list', () {
+      state.init();
+      state.controllers[0].text = "Player 12";
+      state.controllers[0].text = "Player 123";
+      expect(state.changes.length, 2);
+      expect(state.changes[1], isA<ChangePlayerEvent>());
+      expect(
+        (state.changes[1] as ChangePlayerEvent).oldPlayerName,
+        Player("Player 12"),
+      );
+      expect(
+        (state.changes[1] as ChangePlayerEvent).newPlayerName,
+        Player("Player 123"),
+      );
+    });
   });
 }

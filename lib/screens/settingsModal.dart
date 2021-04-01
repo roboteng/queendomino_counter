@@ -57,8 +57,11 @@ class EditPlayersModal extends StatelessWidget {
                   ),
                 ),
                 SaveCancelOptions(
-                  returnParams: () =>
-                      context.read<EditPlayersModalState>().changes,
+                  returnParams: () {
+                    final foo = context.read<EditPlayersModalState>().changes;
+                    print("Sending events: $foo");
+                    return foo;
+                  },
                 ),
               ],
             );
