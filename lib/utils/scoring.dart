@@ -22,7 +22,7 @@ class RemovePlayerEvent extends ScoringEvent {
 
   @override
   List<PlayerScore> getNextState(List<PlayerScore> oldState) {
-    return oldState..removeWhere((p) => p.player == player);
+    return (oldState..removeWhere((p) => p.player == player)).toList();
   }
 }
 

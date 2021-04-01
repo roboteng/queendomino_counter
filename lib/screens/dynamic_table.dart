@@ -47,6 +47,10 @@ class _DynamicTableState extends State<DynamicTable> {
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  void init() {
     _verticalSyncController = _SyncScrollController([
       _verticalTitleController,
       _verticalBodyController,
@@ -59,6 +63,12 @@ class _DynamicTableState extends State<DynamicTable> {
     headerKeys = List.generate(widget.columnsLength, (index) => GlobalKey());
     dataKeys = List.generate(widget.columnsLength,
         (x) => List.generate(widget.rowsLength, (y) => GlobalKey()));
+  }
+
+  @override
+  void didUpdateWidget(covariant DynamicTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    init();
   }
 
   @override
