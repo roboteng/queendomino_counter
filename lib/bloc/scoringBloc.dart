@@ -9,7 +9,6 @@ class ScoringBloc extends Bloc<ScoringEvent, List<PlayerScore>> {
             [PlayerScore(Player("Player 1")), PlayerScore(Player("Player 2"))]);
   @override
   Stream<List<PlayerScore>> mapEventToState(ScoringEvent event) async* {
-    print("Got event: $event");
     final result = event.getNextState(state);
     if (result != null) {
       yield result;
