@@ -1,6 +1,6 @@
+import 'package:queendomino_counter/domain/entities/categories.dart';
 import 'package:queendomino_counter/domain/entities/player.dart';
 import 'package:queendomino_counter/domain/entities/player_score.dart';
-import 'package:queendomino_counter/utils/categoryScoring.dart';
 
 abstract class ScoringEvent {
   List<PlayerScore> getNextState(List<PlayerScore> oldState);

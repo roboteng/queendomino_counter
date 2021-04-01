@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:queendomino_counter/domain/entities/categories.dart';
 import 'package:queendomino_counter/screens/scoreBreakout.dart';
 import 'package:queendomino_counter/utils/categoryScoring.dart';
 import 'package:queendomino_counter/utils/scoring.dart';

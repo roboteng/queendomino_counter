@@ -1,4 +1,4 @@
-import 'package:queendomino_counter/utils/categoryScoring.dart';
+import 'package:queendomino_counter/domain/entities/categories.dart';
 
 final String kCoin = 'Coin';
 final String kWheat = 'Wheat';

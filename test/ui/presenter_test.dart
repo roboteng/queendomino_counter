@@ -1,8 +1,8 @@
 import 'package:queendomino_counter/constants/constants.dart';
+import 'package:queendomino_counter/domain/entities/categories.dart';
 import 'package:queendomino_counter/domain/entities/player.dart';
 import 'package:queendomino_counter/domain/entities/player_score.dart';
 import 'package:queendomino_counter/ui/scoring_screen_viewmodel_generator.dart';
-import 'package:queendomino_counter/utils/categoryScoring.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,6 +1,6 @@
 import 'package:queendomino_counter/bloc/scoringBloc.dart';
+import 'package:queendomino_counter/domain/entities/categories.dart';
 import 'package:queendomino_counter/domain/entities/player.dart';
-import 'package:queendomino_counter/utils/categoryScoring.dart';
 import 'package:queendomino_counter/utils/scoring.dart';
 import 'package:test/test.dart';
 
